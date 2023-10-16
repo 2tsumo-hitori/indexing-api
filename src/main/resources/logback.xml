@@ -1,0 +1,43 @@
+<configuration>
+
+    <!-- 기본 출력 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- LogController 클래스에 대한 로그 파일 설정 -->
+    <appender name="indexingData" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %msg%n</pattern>
+        </encoder>
+
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>-->
+
+        <!-- RollingPolicy 설정 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 로그 파일 이름 패턴 -->
+            <fileNamePattern>./logs/access-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 최대 보관 기간 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <!-- TotalSizeCap 설정 (최대 100MB) -->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>100MB</maxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <!-- LogController 클래스에 대한 로그 레벨 설정 -->
+    <logger name="INDEXING_DATA_LOGGER" level="INFO">
+        <appender-ref ref="indexingData" />
+    </logger>
+
+    <!-- 기본 로그 레벨 설정 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>
